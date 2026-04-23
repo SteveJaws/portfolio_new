@@ -18,3 +18,18 @@ $tertiary-color: #EFD5B7;
     --color-text: var(--vt-c-text-dark-2);
   }
 }
+
+@mixin standard-button{
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  background-color: $main-color;
+  border: none;
+  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+
+  &:hover{
+    border-radius: 0.5rem;
+    background-color: $tertiary-color;
+    color: $secondary-color;
+    cursor: pointer;
+  }
+}

@@ -1,5 +1,32 @@
 @use 'base.scss' as *;
 
 body{
-  background-color: $main-color;
+  background-color: $background-color;
+  color: white;
+}
+
+button{
+  @include standard-button;
+  color: white;
+}
+
+//phone
+@media (max-width: 600px) {
+  body, html{
+    font-size: small;
+  }
+}
+
+//tablet
+@media (min-width: 601px) and (max-width: 1023px) {
+  body, html{
+    font-size: medium;
+  }
+}
+
+//desktop
+@media (min-width: 1024px) {
+  body, html{
+    font-size: large;
+  }
 }
