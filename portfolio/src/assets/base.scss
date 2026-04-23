@@ -1,0 +1,20 @@
+/* color pallete https://colorhunt.co/palette/26252ce54861f2a379efd5b7 */
+
+$background-color: #26252C;
+$main-color: #E54861;
+$secondary-color: #F2A379;
+$tertiary-color: #EFD5B7;
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--vt-c-black);
+    --color-background-soft: var(--vt-c-black-soft);
+    --color-background-mute: var(--vt-c-black-mute);
+
+    --color-border: var(--vt-c-divider-dark-2);
+    --color-border-hover: var(--vt-c-divider-dark-1);
+
+    --color-heading: var(--vt-c-text-dark-1);
+    --color-text: var(--vt-c-text-dark-2);
+  }
+}
