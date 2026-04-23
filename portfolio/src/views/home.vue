@@ -1,11 +1,11 @@
 <template>
-    hello world
-
-    <button @click="clicked = !clicked" v-motion :initial="{ scale: 0 }" :animate="{ scale: 1 }">Click me</button>
+    <button @click="page('/test')">click me</button>
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+import { eventBus } from '@/utils/eventBus'
 
-    const clicked = ref(false);
+function page(page){
+    eventBus.emit('loadPage', page);
+}
 </script>

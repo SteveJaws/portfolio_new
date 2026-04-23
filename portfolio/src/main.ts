@@ -7,6 +7,7 @@ import App from './App.vue'
 import router from './router'
 
 import { MotionPlugin } from 'motion-v'
+import { useInView } from 'motion-v';
 
 const app = createApp(App)
 

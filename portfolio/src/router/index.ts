@@ -1,5 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import Transition from '@/shared/transition.vue'
 import Home from '@/views/home.vue'
+import Test from '@/views/test.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,6 +10,16 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: Test
+    },
+    {
+      path: '/transition',
+      name: 'transition',
+      component: Transition
     }
   ],
 })
