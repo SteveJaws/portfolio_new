@@ -16,8 +16,8 @@
     background-color: $main-color;
 
     animation:
-      slide-down 1s ease-in-out forwards,
-      slide-up 0.2s ease-in-out forwards 3.9s; 
+      slide-down 0.5s ease-in-out forwards,
+      slide-up 0.2s ease-in-out forwards 2.35s; 
 }
 
 .arrow{
@@ -30,10 +30,10 @@
     transform: translate(-50%, -50%);
     background-color: $tertiary-color;
 
-    animation: make-arrow 0.5s ease-in-out forwards 1s,
-    ready-arrow 0.5s ease-in-out forwards 1.6s,
-    pulse 1s ease-in forwards 2.4s,
-    fire-arrow 0.2s ease-in forwards 3.6s;
+    animation: make-arrow 0.5s ease-in-out forwards 0.5s,
+    ready-arrow 0.5s ease-in-out forwards 1.1s,
+    pulse 0.5s ease-in forwards 1.6s,
+    fire-arrow 0.2s ease-in forwards 2.1s;
 
     z-index: 2;
 }
