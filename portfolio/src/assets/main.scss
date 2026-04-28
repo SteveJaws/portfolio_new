@@ -8,11 +8,6 @@ body, html{
   color: white;
 }
 
-button{
-  @include standard-button;
-  color: white;
-}
-
 //phone
 @media (max-width: 600px) {
   body, html{

@@ -1,9 +1,9 @@
 <template>
-    home page
-    <button @click="page('/test')">click me</button>
+    <CustomButton title="button" @clicked="() => console.log('hello')" />
 </template>
 
 <script setup>
+import CustomButton from '@/shared/customButton.vue';
 import { eventBus } from '@/utils/eventBus'
 
 function page(page){
