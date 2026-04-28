@@ -5,7 +5,26 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import router from '@/router';
+import { onMounted, onUpdated } from 'vue';
+
+const emit = defineEmits(["loadedPage"]);
+
+const props = defineProps({
+    page: String,
+});
+
+onMounted(() => {
+    setTimeout(() => {
+        router.push(props.page);
+    }, 500)
+
+    setTimeout(() => {
+        emit("loadedPage");
+    }, 3000);
+});
+</script>
 
 <style lang="scss">
     @use '../assets/base.scss' as *;

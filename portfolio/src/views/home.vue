@@ -1,4 +1,5 @@
 <template>
+    home page
     <button @click="page('/test')">click me</button>
 </template>
 
