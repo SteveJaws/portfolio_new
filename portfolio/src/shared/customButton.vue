@@ -39,7 +39,6 @@ button{
     background: transparent;
     padding: 1rem 2rem;
     overflow: hidden;
-    color: white;
 
     &:hover{
         cursor: pointer;
@@ -53,19 +52,19 @@ button{
     }
 
     .fillament{
-        width: 200%;
-        height: 210%;
+        width: 100%;
+        height: 100%;
         border-radius: 1rem;
         position: absolute;
-        left: -50%;
-        top: -75%;
+        left: 0;
+        top: 0;
         background-color: $main-color;
+        border-bottom-right-radius: 100%;
 
-        transform: rotate(30deg);
-
-        animation: fill 0.5s ease-in forwards,
-        transform 0.5s ease-in-out forwards 0.6s,
-        hover 1s ease-in-out infinite 1.1s;
+        animation: fill-width 0.5s ease-in,
+        fill-heigth 0.5s ease-in,
+        fill-radius 0.5s ease-in forwards,
+        hover 1s ease-in-out infinite 0.5s;
     }
 }
 
@@ -84,29 +83,33 @@ button{
     }
 }
 
-@keyframes fill{
+@keyframes fill-width{
     0%{
-        left: -300%;
-    }
-    100%{
-        left: -50%;
-    }
-}
-
-@keyframes transform{
-    0%{
-        width: 200%;
-        height: 210%;
-        left: -50%;
-        top: -75%;
-        transform: rotate(30deg);
+        width: 0;
     }
     100%{
         width: 100%;
+    }
+}
+
+@keyframes fill-heigth{
+    0%{
+        height: 0;
+    }
+    100%{
         height: 100%;
-        left: 0%;
-        top: 0%;
-        transform: rotate(0);
+    }
+}
+
+@keyframes fill-radius{
+    0%{
+        border-bottom-right-radius: 100%
+    }
+    80%{
+        border-bottom-right-radius: 100%
+    }
+    100%{
+        border-bottom-right-radius: 1rem;
     }
 }
 
