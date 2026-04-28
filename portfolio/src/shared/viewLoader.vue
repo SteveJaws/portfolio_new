@@ -26,7 +26,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @use '../assets/base.scss' as *;
 
 .container{
