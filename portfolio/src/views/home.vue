@@ -136,7 +136,6 @@ function page(page){
     z-index: 2;
 
     &:hover{
-        cursor: pointer;
         background-color: $tertiary-color;
     }
 }

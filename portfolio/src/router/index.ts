@@ -1,4 +1,3 @@
-import CustomButton from '@/shared/customButton.vue'
 import Home from '@/views/home.vue'
 import Test from '@/views/test.vue'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -15,11 +14,6 @@ const router = createRouter({
       path: '/test',
       name: 'test',
       component: Test
-    },
-    {
-      path: '/buttonTest',
-      name: 'buttonTest',
-      component: CustomButton
     }
   ],
 })

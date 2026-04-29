@@ -1,6 +1,5 @@
 <template>
-welcome to the test page
-<button @click="loadPage">home page</button>
+Welcome to the test page
 </template>
 
 <script setup>
