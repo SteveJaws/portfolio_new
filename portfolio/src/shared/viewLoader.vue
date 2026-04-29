@@ -35,6 +35,7 @@ onMounted(() => {
     position: fixed;
     top: -100%;
     background-color: $main-color;
+    z-index: 999;
 
     animation:
       slide-down 0.5s ease-in-out forwards,

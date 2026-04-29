@@ -1,57 +1,106 @@
 <template>
-    <div class="container">
+    <div id="container" class="container">
         <div class="title-card">
-            <h1 v-motion :initial="{scale:0}" :animate="{scale:1}">A</h1>
-            <h2 v-motion :initial="{scale:0}" :animate="{scale:1}">S</h2>
+            <h1 v-motion :initial="{scale:0}" :animate="{scale:1}">Aron van Duijn</h1>
+            <h2 v-motion :initial="{scale:0}" :animate="{scale:1}">Software Developer</h2>
         </div>
 
-        <div @mouseup="releaseZipper" @mousedown="holdZipper" id="zipper" class="zipper"></div>
+        <span id="instruction" class="instruction">Hold me!</span>
+        <div @mouseup="releaseZipper" @mousedown="holdZipper" id="zipper" class="zipper zipper-rotate"></div>
     </div>
 </template>
 
 <script setup>
 import { eventBus } from '@/utils/eventBus'
+import { onMounted } from 'vue';
 
-let mouseX = 0;
-let mouseY = 0;
-let screenWidth = window.innerWidth;
-let screenHeight = window.innerHeight;
+let screenWidth;
+let screenHeight;
 
-let following = false;
+let zipperStartWidth;
+let zipperStartHeight;
+
+let grow = false;
 
 let zipper;
 
-setTimeout(() => {
+onMounted(() => {
     zipper = document.getElementById("zipper");
-}, 100);
 
-document.addEventListener("mousemove", (event) => {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-})
+    zipper.addEventListener("touchstart", () => {
+        zipper.style.backgroundColor = "#EFD5B7";
+        holdZipper();
+    });
+
+    zipper.addEventListener("touchend", () => {
+        zipper.style.backgroundColor = "white";
+        releaseZipper();
+    });
+
+    zipperStartWidth = zipper.getBoundingClientRect().width;
+    zipperStartHeight = zipper.getBoundingClientRect().height;
+
+    let container = document.getElementById("container");
+
+    screenWidth = container.getBoundingClientRect().width;
+    screenHeight = container.getBoundingClientRect().height;
+});
 
 function holdZipper(){
-    following = true;
-    zipper.style.borderRadius = "50%"
-    followLoop();
+    document.getElementById("instruction").style.opacity = 0;
+    zipper.classList.remove("zipper-rotate");
+    zipper.style.borderRadius = "50%";
+    grow = true;
+    growLoop();
 }
 
 function releaseZipper(){
-    following = false;
-    zipper.style.borderRadius = "1rem"
+    document.getElementById("instruction").style.opacity = 1;
+    zipper.style.borderRadius = "1rem";
+    grow = false;
+    shrinkLoop();
+}
+
+function shrinkLoop(){
+    if (grow) return;
+    let currentWidth = zipper.getBoundingClientRect().width;
+    let currentHeigth = zipper.getBoundingClientRect().width;
+
+    if(currentWidth > zipperStartWidth || currentHeigth > zipperStartHeight){
+        currentWidth -= 7 * screenWidth / screenHeight;
+        currentHeigth -= 7 * screenWidth / screenHeight;
+
+        zipper.style.width = currentWidth + "px";
+        zipper.style.height = currentHeigth + "px";
+
+        requestAnimationFrame(shrinkLoop);
+    }
+    else{
+        zipper.classList.add("zipper-rotate");
+    }
+}
+
+function growLoop(){
+    if (!grow) return;
+
+    let currentWidth = zipper.getBoundingClientRect().width;
+    let currentHeigth = zipper.getBoundingClientRect().width;
+
+    if(currentWidth > screenWidth * 1.2 && currentHeigth > screenHeight * 1.2){
+        page("/test");
+    }
+
+    currentWidth += 7 * screenWidth / screenHeight;
+    currentHeigth += 7 * screenWidth / screenHeight;
+
+    zipper.style.width = currentWidth + "px";
+    zipper.style.height = currentHeigth + "px";
+    
+    requestAnimationFrame(growLoop);
 }
 
 function page(page){
     eventBus.emit('loadPage', page);
-}
-
-function followLoop(){
-    if (!following) return;
-
-    zipper.style.left = (mouseX / screenWidth * 100) + "%";
-    zipper.style.top = (mouseY / screenHeight * 100) + "%";
-
-    requestAnimationFrame(followLoop);
 }
 </script>
 
@@ -62,6 +111,8 @@ function followLoop(){
     width: 100vw;
     height: 100vh;
     background-color: $background-color;
+    overflow: hidden;
+    text-align: center;
 
     .title-card{
         position: absolute;
@@ -73,25 +124,37 @@ function followLoop(){
 }
 
 .zipper{
-    width: 8rem;
-    height: 8rem;
-    border-radius: 0.2rem;
+    width: 5rem;
+    height: 5rem;
+    border-radius: 1rem;
     position: absolute;
     left: 50%;
     top: 70%;
     transform: translate(-50%, -70%);
     background-color: white;
-    animation: zipper-idle 1s linear infinite;
-    transition: all 0.5s ease-in-out;
+    transition: border-radius 0.5s ease-in-out, background-color 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    z-index: 2;
 
     &:hover{
-        border-radius: 1rem;
-        width: 9rem;
-        height: 9rem;
+        cursor: pointer;
+        background-color: $tertiary-color;
     }
 }
 
-@keyframes zipper-idle{
+.zipper-rotate{
+    animation: zipper-rotate 1s linear infinite;
+}
+
+.instruction{
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -80%);
+    transition: all 0.2s ease-in-out;
+    z-index: 1;
+}
+
+@keyframes zipper-rotate{
     100%{
         transform: translate(-50%, -70%) rotate(90deg);
     }
