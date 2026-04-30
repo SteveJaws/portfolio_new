@@ -1,5 +1,5 @@
 <template>
-    <div id="container" class="container"></div>
+    <div id="cursor" class="cursor"></div>
 </template>
 
 <script setup>
@@ -17,7 +17,7 @@ eventBus.on("hover", () => {
 });
 
 onMounted(() => {
-    cursor = document.getElementById("container");
+    cursor = document.getElementById("cursor");
 });
 
 document.addEventListener("mousemove", (event) => {
@@ -35,37 +35,40 @@ document.addEventListener("mousemove", (event) => {
     }, 100)
 });
 
-document.addEventListener("click", () => {
-    if(clicking) return;
-    cursor.classList.add("click");
-    clicking = true;
+document.addEventListener("mousedown", () => {
     makeClickRipple();
-    setTimeout(() => {
-        cursor.classList.remove("click");
-        clicking = false;
-    }, 500);
+    cursor.style.backgroundColor = "#E54861";
+});
+
+document.addEventListener("mouseup", () => {
+    cursor.style.backgroundColor = "white";
 });
 
 function makeClickRipple(){
     let ripple = document.createElement("div");
-    ripple.classList.add("ripple")
-    console.log("chekc");
-    cursor.appendChild(ripple);
+
+    let cursorElement = cursor.getBoundingClientRect();
+    ripple.classList.add("ripple");
+    ripple.style.left = cursorElement.x + cursorElement.width / 2 + "px";
+    ripple.style.top = cursorElement.y + cursorElement.height / 2 + "px";
+    document.body.appendChild(ripple);
+
+    setTimeout(() => {
+        ripple.remove();
+    }, 1000)
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @use "../assets/base.scss" as *;
 
-.container{
+.cursor{
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
     position: absolute;
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
-    transition: opacity 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out;
     opacity: 0;
     pointer-events: none;
     z-index: 999;
@@ -77,13 +80,12 @@ function makeClickRipple(){
     height: 2rem;
     border: 0.2rem solid $main-color;
     border-radius: 50%;
+    position: absolute;
     transform: translate(-50%, -50%);
     opacity: 0;
-    animation: ripple 0.5s ease-in-out;
-}
-
-.click{
-    animation: click 0.5s ease-in-out;
+    animation: ripple 1s ease-in-out;
+    z-index: 999;
+    pointer-events: none;
 }
 
 @keyframes ripple{
@@ -91,22 +93,29 @@ function makeClickRipple(){
         opacity: 1;
     }
     100%{
-        width: 5rem;
-        height: 5rem;
-        opacity: 0.2;
+        width: 7rem;
+        height: 7rem;
+        opacity: 0;
     }
 }
 
-@keyframes click{
-    0%{
-        transform: translate(-50%, -50%) scale(1);
-    }
-    50%{
-        transform: translate(-50%, -50%) scale(2);
+.make-clicked{
+    animation: make-clicked 0.5s ease-in-out forwards;
+}
+
+@keyframes make-clicked{
+    100%{
         background-color: $main-color;
     }
+}
+
+.make-unclicked{
+    animation: make-unclicked 0.5s ease-in-out forwards;
+}
+
+@keyframes make-unclicked{
     100%{
-        transform: translate(-50%, -50%) scale(1);
+        background-color: white;
     }
 }
 </style>
