@@ -1,16 +1,18 @@
 <template>
-    <div id="cursor" class="cursor"></div>
+    <div id="cursor" class="cursor">
+        <div v-if="scrolling" id="scrollIndicator" class="scroll-indicator"></div>
+    </div>
 </template>
 
 <script setup>
 import { eventBus } from '@/utils/eventBus';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 let cursor;
 
 let invisible = true;
 
-let clicking = false;
+const scrolling = ref(false);
 
 eventBus.on("hover", () => {
     console.log("hover");
@@ -37,11 +39,50 @@ document.addEventListener("mousemove", (event) => {
 
 document.addEventListener("mousedown", () => {
     makeClickRipple();
-    cursor.style.backgroundColor = "#E54861";
+    cursor.style.width = "1.5rem";
+    cursor.style.height = "1.5rem";
 });
 
 document.addEventListener("mouseup", () => {
-    cursor.style.backgroundColor = "white";
+    cursor.style.width = "1rem";
+    cursor.style.height = "1rem";
+});
+
+let lastScrollY = window.scrollY;
+
+document.addEventListener("scroll", () => {
+    scrolling.value = true;
+
+    const scrollIndicator = document.getElementById("scrollIndicator");
+    const currentScrollY = window.scrollY;
+
+    cursor.style.height = "1.5rem";
+    cursor.style.width = "0.5rem";
+    cursor.style.borderRadius = "0.2rem";
+
+    if (currentScrollY > lastScrollY) {
+        scrollDown(scrollIndicator);
+    } else{
+        scrollUp(scrollIndicator);
+    }
+
+    lastScrollY = currentScrollY;
+});
+
+function scrollUp(scrollIndicator){
+    scrollIndicator.style.top = 0;
+}
+
+function scrollDown(scrollIndicator){
+    scrollIndicator.style.top = "50%";
+}
+
+document.addEventListener("scrollend", () => {
+    scrolling.value = false;
+
+    cursor.style.height = "1rem";
+    cursor.style.width = "1rem";
+    cursor.style.borderRadius = "50%";
 });
 
 function makeClickRipple(){
@@ -66,13 +107,23 @@ function makeClickRipple(){
     width: 1rem;
     height: 1rem;
     border-radius: 50%;
-    position: absolute;
+    position: fixed;
     transform: translate(-50%, -50%);
-    transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out, border-radius 0.5s ease-in-out;
     opacity: 0;
     pointer-events: none;
     z-index: 999;
+    overflow: hidden;
     background-color: white;
+
+    .scroll-indicator{
+        width: 100%;
+        height: 50%;
+        position: absolute;
+        transition: all 0.5s ease-in-out;
+        animation: indicator 1s ease-in-out infinite;
+        background-color: $main-color;
+    }
 }
 
 .ripple{
@@ -80,7 +131,7 @@ function makeClickRipple(){
     height: 2rem;
     border: 0.2rem solid $main-color;
     border-radius: 50%;
-    position: absolute;
+    position: fixed;
     transform: translate(-50%, -50%);
     opacity: 0;
     animation: ripple 1s ease-in-out;
@@ -116,6 +167,12 @@ function makeClickRipple(){
 @keyframes make-unclicked{
     100%{
         background-color: white;
+    }
+}
+
+@keyframes indicator{
+    50%{
+        opacity: 0.5;
     }
 }
 </style>
